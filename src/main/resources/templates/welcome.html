@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Welcome</title>
+</head>
+<body>
+<h2>Welcome, <span th:text="${name}">[Name]</span>!</h2>
+<p>Email: <span th:text="${email}">[Email]</span></p>
+<p>Spotify User ID: <span th:text="${id}">[ID]</span></p>
+<a href="/logout">Logout</a>
+</body>
+</html>
