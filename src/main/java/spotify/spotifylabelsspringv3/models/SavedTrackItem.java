@@ -2,8 +2,9 @@ package spotify.spotifylabelsspringv3.models;
 
 
 import lombok.Data;
+import spotify.spotifylabelsspringv3.track.Track;
 
 @Data
 public class SavedTrackItem {
-    private Track track;
+    private SpotifyTrack track;
 }

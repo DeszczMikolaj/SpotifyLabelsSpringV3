@@ -1,6 +1,5 @@
-package spotify.spotifylabelsspringv3;
+package spotify.spotifylabelsspringv3.controllers;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
@@ -9,7 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
 import spotify.spotifylabelsspringv3.models.SavedTrackItem;
 import spotify.spotifylabelsspringv3.models.SavedTracksResponse;
-import spotify.spotifylabelsspringv3.models.Track;
 
 import java.util.ArrayList;
 import java.util.List;
