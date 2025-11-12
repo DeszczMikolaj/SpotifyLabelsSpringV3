@@ -13,7 +13,7 @@ public class ArtistConverter implements AttributeConverter<Set<Artist>, String> 
     @Override
     public String convertToDatabaseColumn(Set<Artist> attribute) {
         if (attribute == null || attribute.isEmpty()) return null;
-        return attribute.stream().map(Artist::getName).collect(Collectors.joining(","));
+        return attribute.stream().map(Artist::name).collect(Collectors.joining(","));
     }
 
     @Override
@@ -21,7 +21,7 @@ public class ArtistConverter implements AttributeConverter<Set<Artist>, String> 
         if (dbData == null || dbData.isBlank()) return Set.of();
         return Arrays.stream(dbData.split(","))
                 .map(String::trim)
-                .map(string -> new Artist())
+                .map(Artist::new)
                 .collect(Collectors.toSet());
     }
 }
