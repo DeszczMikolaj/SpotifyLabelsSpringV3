@@ -13,6 +13,9 @@ import java.util.Set;
 @Data
 public class Track {
 
+    protected Track() {
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,6 +29,7 @@ public class Track {
     private String name;             // Track's name (song name)
 
     @Convert(converter = ArtistConverter.class)
+    @Column
     @Getter
     private Set<Artist> artists;
 
@@ -37,4 +41,6 @@ public class Track {
         this.name = name;
         this.artists = artists;
     }
+
+
 }

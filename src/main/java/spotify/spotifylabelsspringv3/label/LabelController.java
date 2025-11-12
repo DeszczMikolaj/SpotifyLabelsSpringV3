@@ -1,10 +1,11 @@
 package spotify.spotifylabelsspringv3.label;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import spotify.spotifylabelsspringv3.track.CreateTrackResponse;
-import spotify.spotifylabelsspringv3.track.Track;
-import spotify.spotifylabelsspringv3.track.TrackService;
+
+import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/labels")
@@ -17,14 +18,26 @@ public class LabelController {
         this.labelService = labelService;
     }
 
-    @PostMapping
-    public ResponseEntity<CreateLabelResponse> create(@RequestBody CreateLabelRequest request) {
-        Label label = labelService.createLabel(request.name());
-        return ResponseEntity.ok(new CreateLabelResponse(label.getId(), label.getName()));
+    @GetMapping
+    public List<LabelDTO> getAllLabels() {
+        return labelService.findAll();
     }
 
-    @GetMapping
-    public String test() {
-        return "Test";
+    @PostMapping
+    public ResponseEntity<LabelDTO> create(@RequestBody CreateLabelRequest request) {
+        LabelDTO label = labelService.createLabel(request.name());
+        return ResponseEntity.created(URI.create("/labels/" + label.id())).body(label);
     }
+
+    @GetMapping("/labelTracks/{labelId}")
+    public List<TrackDTO> getLabeledTracks (@PathVariable Long labelId) {
+        return labelService.findAllTrackForLabel(labelId);
+    }
+
+    @PostMapping("/labelTracks")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void labelTracks(@RequestBody AddLabelToTracksRequest request) {
+        labelService.addLabelToTracks(request.labelId(), request.tracksIds());
+    }
+
 }
