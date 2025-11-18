@@ -10,13 +10,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class HomeController {
     @GetMapping("/")
     public String home(Model model, @AuthenticationPrincipal OAuth2User principal) {
-        if (principal != null) {
-            model.addAttribute("name", principal.getAttribute("display_name"));
-            model.addAttribute("email", principal.getAttribute("email"));
-            model.addAttribute("id", principal.getAttribute("id"));
-            return "welcome";
-        }
+//        if (principal != null) {
+//            model.addAttribute("name", principal.getAttribute("display_name"));
+//            model.addAttribute("email", principal.getAttribute("email"));
+//            model.addAttribute("id", principal.getAttribute("id"));
+//            return "welcome";
+//        }
         return "index";
     }
-
 }

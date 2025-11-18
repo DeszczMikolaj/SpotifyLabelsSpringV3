@@ -33,8 +33,8 @@ public class OperationsTestController {
     }
 
 
-    @PostMapping("operation/labeledToNewPlaylist")
-    public void operationA (@RegisteredOAuth2AuthorizedClient("spotify") OAuth2AuthorizedClient auth2AuthorizedClient, @RequestBody NewPlaylistWithTracksRequest request){
+    @PostMapping("operation/createPlaylistWithLabeledTracks")
+    public void createPlaylistWithLabeledTracks (@RegisteredOAuth2AuthorizedClient("spotify") OAuth2AuthorizedClient auth2AuthorizedClient, @RequestBody NewPlaylistWithTracksRequest request){
         Set<Long> labelsIds = request.labelIds();
         List<String> trackUris = new ArrayList<>();
         if(request.labelMode() == LabelMode.UNION) {
