@@ -4,5 +4,5 @@ import spotify.spotifylabelsspringv3.track.Artist;
 
 import java.util.Set;
 
-public record TrackDTO(Long trackId, String name, Set<Artist> artists) {
+public record TrackDTO(String trackUri, String name, Set<Artist> artists) {
 }

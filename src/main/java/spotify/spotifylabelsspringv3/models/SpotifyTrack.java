@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 public class SpotifyTrack {
-    private String id;               // Track's Spotify ID
+    private String uri;               // Track's Spotify ID
     private String name;             // Track's name (song name)
     private List<Artist> artists;
 }

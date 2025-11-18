@@ -18,8 +18,8 @@ public class TrackService {
     }
 
     @Transactional
-    public Track createTrack(String spotifyId, String title, Set<Artist> artists) {
-        Track track = new Track(spotifyId, title, artists);
+    public Track createTrack(String uri, String title, Set<Artist> artists) {
+        Track track = new Track(uri, title, artists);
         return trackRepository.save(track);
     }
 
@@ -29,6 +29,14 @@ public class TrackService {
     }
 
     public List<TrackDTO> findAllTracks() {
-        return trackRepository.findAll().stream().map(track -> new TrackDTO(track.getId(), track.getName(),track.getArtists())).toList();
+        return trackRepository.findAll().stream().map(track -> new TrackDTO(track.getSpotifyUri(), track.getName(),track.getArtists())).toList();
+    }
+
+    public List<String> findUrisUnionByLabelsIds(Set<Long> labelsIds){
+        return trackRepository.findUnionByLabelIds(labelsIds);
+    }
+
+    public List<String> findUrisIntersectionByLabelsIds(Set<Long> labelsIds){
+        return trackRepository.findIntersectionByLabelIds(labelsIds, labelsIds.size());
     }
 }

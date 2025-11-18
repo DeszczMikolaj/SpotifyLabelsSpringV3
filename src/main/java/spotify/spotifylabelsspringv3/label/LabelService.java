@@ -52,6 +52,6 @@ public class LabelService {
     public List<TrackDTO> findAllTrackForLabel(Long labelId) {
         Label label = labelRepository.findById(labelId).orElseThrow(() -> new IllegalArgumentException("Label not found: " + labelId));
         Set<Track> tracks = label.getTracks();
-        return tracks.stream().map(track -> new TrackDTO(track.getId(), track.getName(), track.getArtists())).toList();
+        return tracks.stream().map(track -> new TrackDTO(track.getSpotifyUri(), track.getName(), track.getArtists())).toList();
     }
 }

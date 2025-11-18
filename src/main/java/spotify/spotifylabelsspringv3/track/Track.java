@@ -22,7 +22,7 @@ public class Track {
 
     @Column(nullable = false, unique = true)
     @Getter
-    private String spotifyId;               // Track's Spotify ID
+    private String spotifyUri;               // Track's Spotify ID
 
     @Column(nullable = false)
     @Getter
@@ -36,8 +36,8 @@ public class Track {
     @ManyToMany(mappedBy = "tracks")
     private Set<Label> labels = new HashSet<>();
 
-    public Track(String spotifyId, String name, Set<Artist> artists) {
-        this.spotifyId = spotifyId;
+    public Track(String spotifyUri, String name, Set<Artist> artists) {
+        this.spotifyUri = spotifyUri;
         this.name = name;
         this.artists = artists;
     }
