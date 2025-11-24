@@ -15,7 +15,7 @@ import { Label } from './ui/label';
 
 type LabelsPanelProps = {
   labels: LabelType[];
-  onAddLabel: (name: string, color: string) => void;
+  onAddLabel: (name: string, colorHex: string) => void;
   onDeleteLabel: (id: string) => void;
   tracks: any[];
 };
@@ -121,7 +121,7 @@ export function LabelsPanel({ labels, onAddLabel, onDeleteLabel, tracks }: Label
                 <div className="flex items-start justify-between mb-4">
                   <div
                     className="size-12 rounded-full"
-                    style={{ backgroundColor: label.color }}
+                    style={{ backgroundColor: label.colorHex }}
                   />
                   <Button
                     variant="ghost"

@@ -1,15 +1,17 @@
 import { useState } from 'react';
+import {useEffect } from 'react';
 import { Sidebar } from './components/Sidebar';
 import { LabelsPanel } from './components/LabelsPanel';
 import { PlaylistsPanel } from './components/PlaylistsPanel';
 import { SearchPanel } from './components/SearchPanel';
 import { PlaylistCreatorPanel } from './components/PlaylistCreatorPanel';
 import { LandingPage } from './components/LandingPage';
+import api from "./api/api";
 
 export type Label = {
   id: string;
   name: string;
-  color: string;
+  colorHex: string;
 };
 
 export type Track = {
@@ -27,24 +29,23 @@ export type Playlist = {
   name: string;
   trackCount: number;
   imageUrl: string;
+  tracks: Track[];
 };
 
 export type User = {
   id: string;
   name: string;
+  email: string;
   avatarUrl: string;
+  authenticated: boolean;
 };
 
 export default function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+
   const [activePanel, setActivePanel] = useState<'labels' | 'playlists' | 'search' | 'creator'>('labels');
-  const [labels, setLabels] = useState<Label[]>([
-    { id: '1', name: 'Workout', color: '#1DB954' },
-    { id: '2', name: 'Chill', color: '#1E3A8A' },
-    { id: '3', name: 'Focus', color: '#9333EA' },
-    { id: '4', name: 'Party', color: '#DC2626' },
-  ]);
+  const [labels, setLabels] = useState<Label[]>([]);
 
   const [tracks, setTracks] = useState<Track[]>([
     {
@@ -75,6 +76,30 @@ export default function App() {
       labels: ['2', '3'],
     },
   ]);
+
+  useEffect(() => {
+      api
+        .get("/api/me")
+        .then((response) => {
+          setUser(response.data);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error("API error:", error);
+          setUser({authenticated: false, name: null, email: null, id: null });
+          setLoading(false);
+        });
+
+      api
+        .get("/api/labels")
+        .then((response) => {
+          setLabels(response.data);
+        })
+        .catch((error) => {
+          console.error("API error:", error);
+        });
+
+    }, []);
 
   const addLabel = (name: string, color: string) => {
     const newLabel: Label = {
@@ -114,22 +139,22 @@ export default function App() {
   };
 
   const handleLogin = () => {
-    // Mock login - in production, this would redirect to Spotify OAuth
-    setIsAuthenticated(true);
-    setUser({
-      id: '1',
-      name: 'John Doe',
-      avatarUrl: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop',
-    });
-    setActivePanel('labels');
+    window.location.href = ("http://localhost:8080/oauth2/authorization/spotify")
   };
 
   const handleLogout = () => {
-    setIsAuthenticated(false);
-    setUser(null);
+     window.location.href = ("http://localhost:8080/logout")
   };
 
-  if (!isAuthenticated) {
+  if (loading) {
+       return (
+         <div className="full-screen center">
+           <p className="muted">Loading…</p>
+         </div>
+       );
+  }
+
+  if (!user?.authenticated) {
     return <LandingPage onLogin={handleLogin} />;
   }
 

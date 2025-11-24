@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useEffect } from 'react';
 import { Play, Music, Tag, Tags, Search, X } from 'lucide-react';
 import { Track, Label, Playlist } from '../App';
 import { TrackItem } from './TrackItem';
@@ -20,32 +21,27 @@ const mockPlaylists: Playlist[] = [
     trackCount: 45,
     imageUrl: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=300&h=300&fit=crop',
   },
-  {
-    id: '2',
-    name: 'Discover Weekly',
-    trackCount: 30,
-    imageUrl: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=300&h=300&fit=crop',
-  },
-  {
-    id: '3',
-    name: 'Chill Vibes',
-    trackCount: 67,
-    imageUrl: 'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=300&h=300&fit=crop',
-  },
-  {
-    id: '4',
-    name: 'Workout Mix',
-    trackCount: 28,
-    imageUrl: 'https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=300&h=300&fit=crop',
-  },
 ];
 
 export function PlaylistsPanel({ tracks, labels, onToggleLabel }: PlaylistsPanelProps) {
+  const [playlists, setPlaylists] = useState<Playlist[] | null>(null)
   const [selectedPlaylist, setSelectedPlaylist] = useState<Playlist | null>(null);
   const [selectedTracks, setSelectedTracks] = useState<string[]>([]);
   const [isBulkDialogOpen, setIsBulkDialogOpen] = useState(false);
   const [bulkMode, setBulkMode] = useState<'selected' | 'all'>('selected');
   const [searchQuery, setSearchQuery] = useState('');
+
+    useEffect(() => {
+          api
+                .get("/api/spotify/mySavedTracks")
+                .then((response) => {
+                  setPlaylists(response.data);
+                })
+                .catch((error) => {
+                  console.error("API error:", error);
+                });
+
+            }, []);
 
   const handleToggleSelect = (trackId: string) => {
     setSelectedTracks(prev =>

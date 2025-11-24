@@ -28,8 +28,16 @@ public class SecurityConfig {
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
                 .oauth2Login(oauth -> oauth
                         // 🔽 after Spotify login, go back to React dev server
-                        .defaultSuccessUrl("http://localhost:5173", true)
-                );
+                        .defaultSuccessUrl("http://localhost:3000", true)
+
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/logout")              // default, you can omit
+                        .logoutSuccessUrl("http://localhost:3000")             // where to go after logout
+                        .invalidateHttpSession(true)
+                        .clearAuthentication(true)
+                        .deleteCookies("JSESSIONID"));
+
         return http.build();
     }
 
