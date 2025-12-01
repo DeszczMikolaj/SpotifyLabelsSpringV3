@@ -27,9 +27,9 @@ public class LabelService {
     }
 
     @Transactional
-    public LabelDTO createLabel(String name, String spotifyId) {
+    public LabelDTO createLabel(String name, String colorHex, String spotifyId) {
         User user = userService.getUser(spotifyId);
-        Label label = new Label(name, user);
+        Label label = new Label(name, colorHex, user);
         labelRepository.save(label);
         return new LabelDTO(label.getId(), label.getName(), label.getColorHex(), label.getTracks().size());
     }

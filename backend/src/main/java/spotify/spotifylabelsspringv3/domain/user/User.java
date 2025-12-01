@@ -2,11 +2,12 @@ package spotify.spotifylabelsspringv3.domain.user;
 
 
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "users")
+@NoArgsConstructor
 public class User {
 
     @Id

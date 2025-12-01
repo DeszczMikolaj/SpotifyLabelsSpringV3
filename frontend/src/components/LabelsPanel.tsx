@@ -12,6 +12,7 @@ import {
   DialogDescription,
 } from './ui/dialog';
 import { Label } from './ui/label';
+import api from "./api/api";
 
 type LabelsPanelProps = {
   labels: LabelType[];

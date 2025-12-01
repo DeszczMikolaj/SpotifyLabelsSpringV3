@@ -7,12 +7,9 @@ import { SearchPanel } from './components/SearchPanel';
 import { PlaylistCreatorPanel } from './components/PlaylistCreatorPanel';
 import { LandingPage } from './components/LandingPage';
 import api from "./api/api";
+import { createLabel } from "./api/labelsApi";
+import { Label } from "./types";
 
-export type Label = {
-  id: string;
-  name: string;
-  colorHex: string;
-};
 
 export type Track = {
   id: string;
@@ -101,13 +98,20 @@ export default function App() {
 
     }, []);
 
-  const addLabel = (name: string, color: string) => {
-    const newLabel: Label = {
-      id: Date.now().toString(),
-      name,
-      color,
-    };
-    setLabels([...labels, newLabel]);
+  const addLabel = async (name: string, colorHex: string) => {
+      try {
+            const created  = await createLabel(name, colorHex);
+            setLabels((prev) => [...prev, created]);
+      }
+      catch (err) {
+            console.error("Failed to create label:", err);
+      }
+//     const newLabel: Label = {
+//       id: Date.now().toString(),
+//       name,
+//       color,
+//     };
+//     setLabels([...labels, newLabel]);
   };
 
   const deleteLabel = (id: string) => {

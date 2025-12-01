@@ -17,7 +17,11 @@ public class UserService {
     @Transactional
     public void registerUserIfRequeried(String spotifyId) {
         Optional<User> registeredUser = userRepository.findBySpotifyId(spotifyId);
-        registeredUser.orElseGet(() -> new User(spotifyId));
+        registeredUser.orElseGet(() -> {
+            User newUser = new User(spotifyId);
+            userRepository.save(newUser);
+            return newUser;
+        });
     }
 
     public User getUser(String spotifyId) {

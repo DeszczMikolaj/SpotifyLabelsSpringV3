@@ -35,7 +35,7 @@ public class LabelController {
     @PostMapping
     public ResponseEntity<LabelDTO> create(@RequestBody CreateLabelRequest request, @AuthenticationPrincipal OAuth2User principal) {
         String spotifyUserId = principal.getAttribute("id");
-        LabelDTO label = labelService.createLabel(request.name(), spotifyUserId);
+        LabelDTO label = labelService.createLabel(request.name(), request.colorHex(), spotifyUserId);
         return ResponseEntity.created(URI.create("/labels/" + label.id())).body(label);
     }
 

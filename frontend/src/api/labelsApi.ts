@@ -8,8 +8,8 @@ export async function getLabels(): Promise<Label[]> {
   return res.data;
 }
 
-export async function createLabel(name: string): Promise<Label> {
-  const res = await api.post<Label>(BASE_URL, { name });
+export async function createLabel(name: string, colorHex: string): Promise<Label> {
+  const res = await api.post<Label>(BASE_URL, { name, colorHex });
   return res.data;
 }
 

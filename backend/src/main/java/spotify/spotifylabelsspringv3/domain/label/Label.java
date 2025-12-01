@@ -42,8 +42,9 @@ public class Label {
     @Getter
     private Set<Track> tracks = new HashSet<>();
 
-    public Label(String name, User user) {
+    public Label(String name, String colorHex, User user) {
         this.name = name;
+        this.colorHex = colorHex;
         this.user = user;
     }
 
