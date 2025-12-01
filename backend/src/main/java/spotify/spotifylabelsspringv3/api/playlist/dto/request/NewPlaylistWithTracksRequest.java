@@ -1,4 +1,4 @@
-package spotify.spotifylabelsspringv3.api.playlist;
+package spotify.spotifylabelsspringv3.api.playlist.dto.request;
 
 import spotify.spotifylabelsspringv3.domain.label.LabelMode;
 

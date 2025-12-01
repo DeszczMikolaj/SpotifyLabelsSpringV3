@@ -6,6 +6,8 @@ import { TrackItem } from './TrackItem';
 import { Button } from './ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
 import { Input } from './ui/input';
+import api from "../api/api";
+
 
 type PlaylistsPanelProps = {
   tracks: Track[];
@@ -18,13 +20,13 @@ const mockPlaylists: Playlist[] = [
   {
     id: '1',
     name: 'My Favorites',
-    trackCount: 45,
+    tracksCount: 45,
     imageUrl: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=300&h=300&fit=crop',
   },
 ];
 
 export function PlaylistsPanel({ tracks, labels, onToggleLabel }: PlaylistsPanelProps) {
-  const [playlists, setPlaylists] = useState<Playlist[] | null>(null)
+  const [playlists, setPlaylists] = useState<Playlist[]>([])
   const [selectedPlaylist, setSelectedPlaylist] = useState<Playlist | null>(null);
   const [selectedTracks, setSelectedTracks] = useState<string[]>([]);
   const [isBulkDialogOpen, setIsBulkDialogOpen] = useState(false);
@@ -32,10 +34,11 @@ export function PlaylistsPanel({ tracks, labels, onToggleLabel }: PlaylistsPanel
   const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
-          api
+        setPlaylists([]);
+        api
                 .get("/api/spotify/mySavedTracks")
                 .then((response) => {
-                  setPlaylists(response.data);
+                    setPlaylists(prev => [...prev, response.data]);
                 })
                 .catch((error) => {
                   console.error("API error:", error);
@@ -115,7 +118,7 @@ export function PlaylistsPanel({ tracks, labels, onToggleLabel }: PlaylistsPanel
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-            {mockPlaylists.map((playlist) => (
+            {playlists.map((playlist) => (
               <button
                 key={playlist.id}
                 onClick={() => setSelectedPlaylist(playlist)}
@@ -134,7 +137,7 @@ export function PlaylistsPanel({ tracks, labels, onToggleLabel }: PlaylistsPanel
                   </div>
                 </div>
                 <h3 className="mb-1 truncate">{playlist.name}</h3>
-                <p className="text-white/60 text-sm">{playlist.trackCount} tracks</p>
+                <p className="text-white/60 text-sm">{playlist.tracksCount} tracks</p>
               </button>
             ))}
           </div>
@@ -151,7 +154,7 @@ export function PlaylistsPanel({ tracks, labels, onToggleLabel }: PlaylistsPanel
             <div className="flex-1 pb-4">
               <p className="text-sm mb-2">PLAYLIST</p>
               <h1 className="mb-4">{selectedPlaylist.name}</h1>
-              <p className="text-white/60">{selectedPlaylist.trackCount} tracks</p>
+              <p className="text-white/60">{selectedPlaylist.tracksCount} tracks</p>
             </div>
           </div>
 
@@ -201,7 +204,7 @@ export function PlaylistsPanel({ tracks, labels, onToggleLabel }: PlaylistsPanel
             </div>
 
             <div className="divide-y divide-white/5">
-              {tracks.map((track, index) => (
+              {selectedPlaylist.tracks.map((track, index) => (
                 <TrackItem
                   key={track.id}
                   track={track}

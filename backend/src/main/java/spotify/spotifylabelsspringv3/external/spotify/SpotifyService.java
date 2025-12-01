@@ -3,10 +3,11 @@ package spotify.spotifylabelsspringv3.external.spotify;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
-import spotify.spotifylabelsspringv3.api.track.TrackDTO;
+import spotify.spotifylabelsspringv3.api.track.dto.TrackDTO;
 import spotify.spotifylabelsspringv3.domain.playlist.SpotifyPlaylist;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class SpotifyService {
@@ -32,7 +33,7 @@ public class SpotifyService {
                     .block(); // Synchronously get the result (stringified JSON)
 
             if (response != null && response.getItems() != null) {
-                allSavedTracks.addAll(response.getItems());
+                allSavedTracks.addAll(response.getItems().stream().map(SavedTrackItem::track).collect(Collectors.toSet()));
             }
 
             nextUrl = response.getNext();

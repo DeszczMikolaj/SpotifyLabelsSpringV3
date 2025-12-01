@@ -1,4 +1,4 @@
-package spotify.spotifylabelsspringv3.api.label;
+package spotify.spotifylabelsspringv3.api.label.dto.request;
 
 import java.util.Set;
 

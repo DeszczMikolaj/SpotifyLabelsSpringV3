@@ -1,13 +1,12 @@
-package spotify.spotifylabelsspringv3.api;
+package spotify.spotifylabelsspringv3.dev;
 
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import spotify.spotifylabelsspringv3.api.playlist.NewPlaylistWithTracksRequest;
+import spotify.spotifylabelsspringv3.api.playlist.dto.request.NewPlaylistWithTracksRequest;
 import spotify.spotifylabelsspringv3.domain.label.LabelService;
-import trackDTO;
 import spotify.spotifylabelsspringv3.domain.label.LabelMode;
 import spotify.spotifylabelsspringv3.domain.playlist.SpotifyPlaylist;
 import spotify.spotifylabelsspringv3.external.spotify.SpotifyService;

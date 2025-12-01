@@ -3,20 +3,20 @@ package spotify.spotifylabelsspringv3.api.spotify;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
-import spotify.spotifylabelsspringv3.api.track.TrackDTO;
-import spotify.spotifylabelsspringv3.api.playlist.PlaylistDTO;
+import spotify.spotifylabelsspringv3.api.spotify.dto.request.AddTracksToSpotifyPlaylistRequest;
+import spotify.spotifylabelsspringv3.api.spotify.dto.request.CreateSpotifyPlaylistRequest;
+import spotify.spotifylabelsspringv3.api.track.dto.TrackDTO;
+import spotify.spotifylabelsspringv3.api.playlist.dto.PlaylistDTO;
 import spotify.spotifylabelsspringv3.domain.playlist.SpotifyPlaylist;
 import spotify.spotifylabelsspringv3.external.spotify.SpotifyService;
 import spotify.spotifylabelsspringv3.domain.track.TrackService;
 
 import java.util.Set;
 
-@RestController("api/spotify")
+@RestController
+@RequestMapping("api/spotify")
 public class SpotifyController {
 
     @Autowired

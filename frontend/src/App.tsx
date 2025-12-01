@@ -27,7 +27,7 @@ export type Track = {
 export type Playlist = {
   id: string;
   name: string;
-  trackCount: number;
+  tracksCount: number;
   imageUrl: string;
   tracks: Track[];
 };
@@ -139,11 +139,11 @@ export default function App() {
   };
 
   const handleLogin = () => {
-    window.location.href = ("http://localhost:8080/oauth2/authorization/spotify")
+    window.location.href = ("http://127.0.0.1:8080/oauth2/authorization/spotify")
   };
 
   const handleLogout = () => {
-     window.location.href = ("http://localhost:8080/logout")
+     window.location.href = ("http://127.0.0.1:8080/logout")
   };
 
   if (loading) {

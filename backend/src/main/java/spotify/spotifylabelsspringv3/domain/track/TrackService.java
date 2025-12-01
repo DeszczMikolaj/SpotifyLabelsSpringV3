@@ -3,10 +3,12 @@ package spotify.spotifylabelsspringv3.domain.track;
 
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import spotify.spotifylabelsspringv3.api.track.dto.TrackDTO;
 import spotify.spotifylabelsspringv3.domain.artist.Artist;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class TrackService {
@@ -28,8 +30,8 @@ public class TrackService {
         return trackRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Track not found: " + id));
     }
 
-    public List<Track> findAllTracks() {
-        return trackRepository.findAll().stream().map(track -> new Track(track.getSpotifyUri(), track.getName(),track.getArtists())).toList();
+    public Set<TrackDTO> findAllTracks() {
+        return trackRepository.findAll().stream().map(track -> new TrackDTO(track.getSpotifyUri(), track.getName(),track.getArtists())).collect(Collectors.toSet());
     }
 
     public List<String> findUrisUnionByLabelsIds(Set<Long> labelsIds){

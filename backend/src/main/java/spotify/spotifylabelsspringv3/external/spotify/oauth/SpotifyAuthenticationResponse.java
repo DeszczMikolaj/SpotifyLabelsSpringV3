@@ -1,4 +1,4 @@
-package spotify.spotifylabelsspringv3.external.oauth;
+package spotify.spotifylabelsspringv3.external.spotify.oauth;
 
 public record SpotifyAuthenticationResponse(boolean authenticated,
                                             String name,

@@ -1,4 +1,4 @@
-package spotify.spotifylabelsspringv3.api.track;
+package spotify.spotifylabelsspringv3.api.track.dto.request;
 
 import spotify.spotifylabelsspringv3.domain.artist.Artist;
 

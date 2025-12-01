@@ -112,7 +112,7 @@ export function LabelsPanel({ labels, onAddLabel, onDeleteLabel, tracks }: Label
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {labels.map((label) => {
-            const trackCount = tracks.filter(t => t.labels.includes(label.id)).length;
+            const tracksCount = tracks.filter(t => t.labels.includes(label.id)).length;
             return (
               <div
                 key={label.id}
@@ -134,7 +134,7 @@ export function LabelsPanel({ labels, onAddLabel, onDeleteLabel, tracks }: Label
                 </div>
                 <h3 className="mb-1">{label.name}</h3>
                 <p className="text-white/40 text-sm">
-                  {trackCount} {trackCount === 1 ? 'track' : 'tracks'}
+                  {tracksCount} {tracksCount === 1 ? 'track' : 'tracks'}
                 </p>
               </div>
             );

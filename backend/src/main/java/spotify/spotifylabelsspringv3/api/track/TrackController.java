@@ -2,10 +2,14 @@ package spotify.spotifylabelsspringv3.api.track;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import spotify.spotifylabelsspringv3.api.track.dto.TrackDTO;
+import spotify.spotifylabelsspringv3.api.track.dto.request.CreateTrackRequest;
+import spotify.spotifylabelsspringv3.api.track.dto.response.CreateTrackResponse;
 import spotify.spotifylabelsspringv3.domain.track.Track;
 import spotify.spotifylabelsspringv3.domain.track.TrackService;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/tracks")
@@ -19,7 +23,7 @@ public class TrackController {
     }
 
     @GetMapping
-    public List<trackDTO> getAllTracks() {
+    public Set<TrackDTO> getAllTracks() {
         return trackService.findAllTracks();
     }
 

@@ -1,7 +1,7 @@
-package spotify.spotifylabelsspringv3.api.playlist;
+package spotify.spotifylabelsspringv3.api.playlist.dto;
 
 
-import spotify.spotifylabelsspringv3.api.track.TrackDTO;
+import spotify.spotifylabelsspringv3.api.track.dto.TrackDTO;
 
 import java.util.Set;
 

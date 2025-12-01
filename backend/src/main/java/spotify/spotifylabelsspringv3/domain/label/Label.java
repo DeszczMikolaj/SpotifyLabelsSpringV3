@@ -4,9 +4,12 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import spotify.spotifylabelsspringv3.domain.track.Track;
+import spotify.spotifylabelsspringv3.domain.user.User;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import static jakarta.persistence.FetchType.LAZY;
 
 @Entity
 @Table(name = "labels")
@@ -17,6 +20,10 @@ public class Label {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter
     Long id;
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name ="user_id", nullable = false)
+    User user;
 
     @Column(nullable = false, unique = true)
     @Getter
@@ -35,8 +42,9 @@ public class Label {
     @Getter
     private Set<Track> tracks = new HashSet<>();
 
-    public Label(String name) {
+    public Label(String name, User user) {
         this.name = name;
+        this.user = user;
     }
 
     public void rename(String newName) {

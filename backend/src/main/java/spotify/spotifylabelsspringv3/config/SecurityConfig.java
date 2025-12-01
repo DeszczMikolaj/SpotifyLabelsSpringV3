@@ -1,5 +1,6 @@
-package spotify.spotifylabelsspringv3.spring;
+package spotify.spotifylabelsspringv3.config;
 
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -20,20 +21,26 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/index", "/css/**", "/js/**", "/h2-console/**", "/labels/**","/tracks/**").permitAll()
-                        .requestMatchers("/api/me").permitAll()
+                        .requestMatchers("/api/me").authenticated()
                         .anyRequest().authenticated()
                 )
                 .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
+                // ⬇️ Return 401 instead of redirecting to Spotify for unauthenticated API calls
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                        })
+                )
                 .oauth2Login(oauth -> oauth
                         // 🔽 after Spotify login, go back to React dev server
-                        .defaultSuccessUrl("http://localhost:3000", true)
+                        .defaultSuccessUrl("http://127.0.0.1:3000", true)
 
                 )
                 .logout(logout -> logout
                         .logoutUrl("/logout")              // default, you can omit
-                        .logoutSuccessUrl("http://localhost:3000")             // where to go after logout
+                        .logoutSuccessUrl("http://127.0.0.1:3000")             // where to go after logout
                         .invalidateHttpSession(true)
                         .clearAuthentication(true)
                         .deleteCookies("JSESSIONID"));
@@ -46,8 +53,8 @@ public class SecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
 
         config.setAllowedOrigins(List.of(
-                "http://localhost:5173",   // Vite
-                "http://localhost:3000"    // (optional) CRA
+                "http://127.0.0.1:5173",   // Vite
+                "http://127.0.0.1:3000"    // (optional) CRA
         ));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
