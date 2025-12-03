@@ -15,9 +15,10 @@ export type Track = {
   id: string;
   name: string;
   artist: string;
-  album: string;
+  albumName: string;
+  albumImageUrl: string;
   duration: string;
-  imageUrl: string;
+  uri: string;
   labels: string[];
 };
 
@@ -45,33 +46,33 @@ export default function App() {
   const [labels, setLabels] = useState<Label[]>([]);
 
   const [tracks, setTracks] = useState<Track[]>([
-    {
-      id: '1',
-      name: 'Blinding Lights',
-      artist: 'The Weeknd',
-      album: 'After Hours',
-      duration: '3:20',
-      imageUrl: 'https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=300&h=300&fit=crop',
-      labels: ['1', '4'],
-    },
-    {
-      id: '2',
-      name: 'Levitating',
-      artist: 'Dua Lipa',
-      album: 'Future Nostalgia',
-      duration: '3:23',
-      imageUrl: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=300&h=300&fit=crop',
-      labels: ['4'],
-    },
-    {
-      id: '3',
-      name: 'Weightless',
-      artist: 'Marconi Union',
-      album: 'Weightless',
-      duration: '8:10',
-      imageUrl: 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=300&h=300&fit=crop',
-      labels: ['2', '3'],
-    },
+//     {
+//       id: '1',
+//       name: 'Blinding Lights',
+//       artist: 'The Weeknd',
+//       album: 'After Hours',
+//       duration: '3:20',
+//       imageUrl: 'https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=300&h=300&fit=crop',
+//       labels: ['1', '4'],
+//     },
+//     {
+//       id: '2',
+//       name: 'Levitating',
+//       artist: 'Dua Lipa',
+//       album: 'Future Nostalgia',
+//       duration: '3:23',
+//       imageUrl: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=300&h=300&fit=crop',
+//       labels: ['4'],
+//     },
+//     {
+//       id: '3',
+//       name: 'Weightless',
+//       artist: 'Marconi Union',
+//       album: 'Weightless',
+//       duration: '8:10',
+//       imageUrl: 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=300&h=300&fit=crop',
+//       labels: ['2', '3'],
+//     },
   ]);
 
   useEffect(() => {

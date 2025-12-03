@@ -1,19 +1,25 @@
 package spotify.spotifylabelsspringv3.api.spotify;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
+import spotify.spotifylabelsspringv3.api.label.dto.LabelDTO;
 import spotify.spotifylabelsspringv3.api.spotify.dto.request.AddTracksToSpotifyPlaylistRequest;
 import spotify.spotifylabelsspringv3.api.spotify.dto.request.CreateSpotifyPlaylistRequest;
+import spotify.spotifylabelsspringv3.api.track.TrackPresentationMapper;
 import spotify.spotifylabelsspringv3.api.track.dto.TrackDTO;
+import spotify.spotifylabelsspringv3.external.spotify.dto.SpotifyTrackDTO;
 import spotify.spotifylabelsspringv3.api.playlist.dto.PlaylistDTO;
 import spotify.spotifylabelsspringv3.domain.playlist.SpotifyPlaylist;
 import spotify.spotifylabelsspringv3.external.spotify.SpotifyService;
 import spotify.spotifylabelsspringv3.domain.track.TrackService;
 
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/spotify")
@@ -32,13 +38,17 @@ public class SpotifyController {
     }
 
     @GetMapping("/mySavedTracks")
-    public PlaylistDTO exportSpotifySavedTracksToDatabase(
+    public PlaylistDTO getSavedTracks(
             @RegisteredOAuth2AuthorizedClient("spotify") OAuth2AuthorizedClient authorizedClient) {
+        Set<SpotifyTrackDTO> likedSpotifyTracks = spotifyService.getLikedSongs(authorizedClient.getAccessToken().getTokenValue());
+        Set<TrackDTO> tracksInPlaylist = likedSpotifyTracks.stream().map(spotifyTrack -> {
+                Set<LabelDTO> trackLabels = trackService.getTrackLabels(spotifyTrack.id());
+                Set<Long> trackLabelsIds = trackLabels.stream().map(LabelDTO::id).collect(Collectors.toSet());
+                return TrackPresentationMapper.fromSpotify(spotifyTrack, trackLabelsIds);
+                }
+        ).collect(Collectors.toSet());
 
-        Set<TrackDTO> likedSpotifyTracks = spotifyService.getLikedSongs(authorizedClient.getAccessToken().getTokenValue());
-        PlaylistDTO likedTracksPlaylist = new PlaylistDTO("Polubione utwory", "https://misc.scdn.co/liked-songs/liked-songs-300.jpg", likedSpotifyTracks, likedSpotifyTracks.size());
-        // You can return it to front-end, or parse it further as needed
-        return likedTracksPlaylist;
+        return new PlaylistDTO("Polubione utwory", "https://misc.scdn.co/liked-songs/liked-songs-300.jpg", tracksInPlaylist, tracksInPlaylist.size());
     }
 
     @PostMapping("/createNewPlaylist")

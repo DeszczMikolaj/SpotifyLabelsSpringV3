@@ -1,10 +1,13 @@
 package spotify.spotifylabelsspringv3.external.spotify;
 
+import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
-import spotify.spotifylabelsspringv3.api.track.dto.TrackDTO;
+import spotify.spotifylabelsspringv3.external.spotify.dto.SpotifyTrackDTO;
 import spotify.spotifylabelsspringv3.domain.playlist.SpotifyPlaylist;
+import spotify.spotifylabelsspringv3.external.spotify.dto.SpotifySavedTrackItem;
+import spotify.spotifylabelsspringv3.external.spotify.dto.SavedTracksSpotifyResponse;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -19,9 +22,9 @@ public class SpotifyService {
         this.spotifyWebClient = webClientBuilder.baseUrl("https://api.spotify.com").build();
     }
 
-    public Set<TrackDTO> getLikedSongs(String accessToken) {
+    public Set<SpotifyTrackDTO> getLikedSongs(String accessToken) {
         String nextUrl = "v1/me/tracks?limit=50";
-        Set<TrackDTO> allSavedTracks = new HashSet<>();
+        Set<SpotifyTrackDTO> allSavedTracks = new HashSet<>();
 
         while (nextUrl != null) {
             SavedTracksSpotifyResponse response = spotifyWebClient
@@ -33,12 +36,37 @@ public class SpotifyService {
                     .block(); // Synchronously get the result (stringified JSON)
 
             if (response != null && response.getItems() != null) {
-                allSavedTracks.addAll(response.getItems().stream().map(SavedTrackItem::track).collect(Collectors.toSet()));
+                allSavedTracks.addAll(response.getItems().stream().map(SpotifySavedTrackItem::track).collect(Collectors.toSet()));
             }
 
             nextUrl = response.getNext();
         }
         return allSavedTracks;
+    }
+
+    public List<SpotifyTrackDTO> getTracksDetails(String accessToken, Set<String> trackIds) {
+       Set<Set<String>> partitionedTracksIds = Lists.partition(new ArrayList<>(trackIds), 50).stream().map(HashSet::new).collect(Collectors.toSet());
+       List<SpotifyTrackDTO> tracks = new ArrayList<>();
+
+       partitionedTracksIds.forEach(trackIdsSets -> {
+           String trackIdsAsParameter = String.join(",", trackIdsSets);
+           GetTracksSpotifyResponse response = spotifyWebClient
+                   .get()
+                   .uri(uriBuilder ->
+                           uriBuilder.path("v1/tracks")
+                                   .queryParam("ids", trackIdsAsParameter)
+                                   .build()
+                   )
+                   .header("Authorization", "Bearer " + accessToken)
+                   .retrieve()
+                   .bodyToMono(GetTracksSpotifyResponse.class)
+                   .block(); // Synchronously get the result (stringified JSON)
+
+           if (response != null && response.getItems() != null) {
+               tracks.addAll(response.getItems());
+           }
+       });
+       return tracks;
     }
 
     public SpotifyPlaylist createPlaylist(String userId, String accessToken, String playlistName) {

@@ -16,14 +16,14 @@ type PlaylistsPanelProps = {
 };
 
 // Mock playlists data
-const mockPlaylists: Playlist[] = [
-  {
-    id: '1',
-    name: 'My Favorites',
-    tracksCount: 45,
-    imageUrl: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=300&h=300&fit=crop',
-  },
-];
+// const mockPlaylists: Playlist[] = [
+//   {
+//     id: '1',
+//     name: 'My Favorites',
+//     tracksCount: 45,
+//     imageUrl: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=300&h=300&fit=crop',
+//   },
+// ];
 
 export function PlaylistsPanel({ tracks, labels, onToggleLabel }: PlaylistsPanelProps) {
   const [playlists, setPlaylists] = useState<Playlist[]>([])
@@ -271,7 +271,7 @@ export function PlaylistsPanel({ tracks, labels, onToggleLabel }: PlaylistsPanel
                           >
                             <div
                               className="size-4 rounded-full"
-                              style={{ backgroundColor: label.color }}
+                              style={{ backgroundColor: label.colorHex}}
                             />
                             <span className="flex-1 text-left">{label.name}</span>
                             <Tag className="size-4 text-white/40" />
@@ -296,11 +296,11 @@ export function PlaylistsPanel({ tracks, labels, onToggleLabel }: PlaylistsPanel
                             key={label.id}
                             onClick={() => handleBulkLabelRemove(label.id)}
                             className="w-full flex items-center gap-3 p-3 rounded-md hover:bg-white/5 transition-colors"
-                            style={{ backgroundColor: label.color + '20' }}
+                            style={{ backgroundColor: label.colorHex+ '20' }}
                           >
                             <div
                               className="size-4 rounded-full"
-                              style={{ backgroundColor: label.color }}
+                              style={{ backgroundColor: label.colorHex}}
                             />
                             <span className="flex-1 text-left">{label.name}</span>
                             <X className="size-4 text-white/60 hover:text-red-500" />

@@ -98,7 +98,7 @@ export function PlaylistCreatorPanel({ tracks, labels }: PlaylistCreatorPanelPro
                           />
                           <div
                             className="size-5 rounded-full"
-                            style={{ backgroundColor: label.color }}
+                            style={{ backgroundColor: label.colorHex}}
                           />
                           <span className="flex-1">{label.name}</span>
                           <span className="text-sm text-white/40">
@@ -186,7 +186,7 @@ export function PlaylistCreatorPanel({ tracks, labels }: PlaylistCreatorPanelPro
                       >
                         <div
                           className="size-3 rounded-full"
-                          style={{ backgroundColor: label.color }}
+                          style={{ backgroundColor: label.colorHex}}
                         />
                         <span className="text-sm">{label.name}</span>
                         <button
@@ -226,7 +226,7 @@ export function PlaylistCreatorPanel({ tracks, labels }: PlaylistCreatorPanelPro
                               <div
                                 key={label.id}
                                 className="size-4 rounded-full"
-                                style={{ backgroundColor: label.color }}
+                                style={{ backgroundColor: label.colorHex}}
                                 title={label.name}
                               />
                             );

@@ -20,15 +20,15 @@ export function TrackItem({ track, index, labels, onToggleLabel, isSelected = fa
   const [searchQuery, setSearchQuery] = useState('');
   const [isPlaying, setIsPlaying] = useState(false);
 
-  const trackLabels = labels.filter(label => track.labels.includes(label.id));
+  const trackLabels = labels.filter(label => track.labelsIds.includes(label.id));
   
   // Filter labels based on search query
   const filteredLabels = labels.filter(label =>
     label.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
   
-  const assignedLabels = filteredLabels.filter(label => track.labels.includes(label.id));
-  const unassignedLabels = filteredLabels.filter(label => !track.labels.includes(label.id));
+  const assignedLabels = filteredLabels.filter(label => track.labelsIds.includes(label.id));
+  const unassignedLabels = filteredLabels.filter(label => !track.labelsIds.includes(label.id));
 
   const handleTrackClick = () => {
     if (onToggleSelect) {
@@ -59,12 +59,11 @@ export function TrackItem({ track, index, labels, onToggleLabel, isSelected = fa
         onClick={handleTrackClick}
       >
         <div className="w-8 flex items-center text-white/60">
-          <span>{index + 1}</span>
         </div>
 
         <div className="flex items-center gap-3 min-w-0">
           <img
-            src={track.imageUrl}
+            src={track.albumImageUrl}
             alt={track.name}
             className="size-10 rounded"
           />
@@ -75,7 +74,7 @@ export function TrackItem({ track, index, labels, onToggleLabel, isSelected = fa
         </div>
 
         <div className="flex items-center text-white/60 truncate">
-          {track.album}
+          {track.albumName}
         </div>
 
         <div className="flex items-center gap-2">
@@ -84,7 +83,7 @@ export function TrackItem({ track, index, labels, onToggleLabel, isSelected = fa
               <div
                 key={label.id}
                 className="flex items-center gap-1.5 px-2 py-1 rounded-md text-xs"
-                style={{ backgroundColor: label.color }}
+                style={{ backgroundColor: label.colorHex}}
               >
                 <span className="text-black font-medium">{label.name}</span>
               </div>
@@ -126,7 +125,7 @@ export function TrackItem({ track, index, labels, onToggleLabel, isSelected = fa
             <DialogTitle className="text-left">
               <div className="flex items-center gap-3 pb-2">
                 <img
-                  src={track.imageUrl}
+                  src={track.albumImageUrl}
                   alt={track.name}
                   className="size-12 rounded flex-shrink-0"
                 />
@@ -172,7 +171,7 @@ export function TrackItem({ track, index, labels, onToggleLabel, isSelected = fa
                       >
                         <div
                           className="size-4 rounded-full"
-                          style={{ backgroundColor: label.color }}
+                          style={{ backgroundColor: label.colorHex}}
                         />
                         <span className="flex-1 text-left">{label.name}</span>
                         <Tag className="size-4 text-white/40" />
@@ -196,11 +195,11 @@ export function TrackItem({ track, index, labels, onToggleLabel, isSelected = fa
                         key={label.id}
                         onClick={() => onToggleLabel(track.id, label.id)}
                         className="w-full flex items-center gap-3 p-3 rounded-md hover:bg-white/5 transition-colors"
-                        style={{ backgroundColor: label.color + '20' }}
+                        style={{ backgroundColor: label.colorHex+ '20' }}
                       >
                         <div
                           className="size-4 rounded-full"
-                          style={{ backgroundColor: label.color }}
+                          style={{ backgroundColor: label.colorHex }}
                         />
                         <span className="flex-1 text-left">{label.name}</span>
                         <X className="size-4 text-white/60 hover:text-red-500" />

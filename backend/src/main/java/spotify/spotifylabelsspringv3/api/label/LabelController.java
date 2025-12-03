@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import spotify.spotifylabelsspringv3.api.label.dto.LabelDTO;
 import spotify.spotifylabelsspringv3.api.label.dto.request.AddLabelToTracksRequest;
 import spotify.spotifylabelsspringv3.api.label.dto.request.CreateLabelRequest;
-import spotify.spotifylabelsspringv3.api.track.dto.TrackDTO;
+import spotify.spotifylabelsspringv3.external.spotify.dto.SpotifyTrackDTO;
 import spotify.spotifylabelsspringv3.domain.label.LabelService;
 
 import java.net.URI;
@@ -40,14 +40,15 @@ public class LabelController {
     }
 
     @GetMapping("/labelTracks/{labelId}")
-    public List<TrackDTO> getLabeledTracks (@PathVariable Long labelId) {
-        return labelService.findAllTrackForLabel(labelId);
+    public List<SpotifyTrackDTO> getLabeledTracks (@RegisteredOAuth2AuthorizedClient("spotify") OAuth2AuthorizedClient authorizedClient, @PathVariable Long labelId) {
+        return labelService.findAllTrackForLabel(authorizedClient.getAccessToken().getTokenValue(), labelId);
     }
 
     @PostMapping("/labelTracks")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void labelTracks(@RequestBody AddLabelToTracksRequest request) {
-        labelService.addLabelToTracks(request.labelId(), request.tracksIds());
+    public void labelTracks(@RequestBody AddLabelToTracksRequest request, @AuthenticationPrincipal OAuth2User principal) {
+        String spotifyUserId = principal.getAttribute("id");
+        labelService.addLabelToTracks(request.labelId(), request.tracksIds(), spotifyUserId);
     }
 
 }

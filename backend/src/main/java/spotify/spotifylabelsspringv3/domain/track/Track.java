@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import spotify.spotifylabelsspringv3.domain.label.Label;
-import spotify.spotifylabelsspringv3.domain.artist.Artist;
-import spotify.spotifylabelsspringv3.domain.artist.ArtistConverter;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -24,25 +22,19 @@ public class Track {
 
     @Column(nullable = false, unique = true)
     @Getter
-    private String spotifyUri;               // Track's Spotify ID
+    private String spotifyId;               // Track's Spotify ID
 
-    @Column(nullable = false)
-    @Getter
-    private String name;             // Track's name (song name)
 
-    @Convert(converter = ArtistConverter.class)
-    @Column
+    @Column(nullable = false, unique = true)
     @Getter
-    private Set<Artist> artists;
+    private String spotifyUri;
 
     @ManyToMany(mappedBy = "tracks")
     private Set<Label> labels = new HashSet<>();
 
-    public Track(String spotifyUri, String name, Set<Artist> artists) {
+    public Track(String spotifyId, String spotifyUri) {
+        this.spotifyId = spotifyId;
         this.spotifyUri = spotifyUri;
-        this.name = name;
-        this.artists = artists;
     }
-
 
 }
